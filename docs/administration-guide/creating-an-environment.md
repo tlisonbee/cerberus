@@ -463,7 +463,7 @@ Create the reverse proxy config for NGINX
 Upload the jar for the Lambda to S3
 
     cerberus --debug -f /path/to/test.yaml publish-lambda --lambda-name WAF
-    
+
 In the above command, `WAF` is a String enum name.
 
 ## Create Gateway Cluster
