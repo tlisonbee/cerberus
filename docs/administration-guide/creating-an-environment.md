@@ -516,7 +516,7 @@ slack-icon         | A URL to a custom icon, you can leave this off to use the d
 
 ## Upload the Lambda to S3 for the CloudFront Security Group IP Synchronizer
 
-Now the Origin ELB is setup behind CloudFront and configured to filter according to the Manual Whitelist,
+The Origin ELB is setup behind CloudFront which is configured to filter according to the Manual Whitelist,
 Manual Blacklist, Auto Blacklist IPs, and other basic edge security rules. Thus, we do not want to allow requests to
 bypass the WAF and talk to the Origin directly.
  
