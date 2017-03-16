@@ -190,11 +190,11 @@ This is a destructive command that overwrites any rules that exist on the securi
 for VPC ingress.
 
 Some commands to stand up Cerberus will require direct network access to EC2 instances. You can accomplish this by
-whitelist-ing your current IP address for port 443, 8080, 8200, 8400, 22, while you stand up the environment, or by
+whitelisting your current IP address for port 443, 8080, 8200, 8400, 22, while you stand up the environment, or by
 using a proxy.
 
 Quick tips for using CIDR notation: `0.0.0.0/0` is the entire internet,
-`192.168.0.9/32` is the single ip4 address of `192.168.0.9`
+`192.168.0.9/32` is the single IPV4 address of `192.168.0.9`
 
 Here is an example YAML section for whitelisting CIDRs:
 
