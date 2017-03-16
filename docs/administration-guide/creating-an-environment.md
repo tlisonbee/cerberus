@@ -464,7 +464,7 @@ Upload the jar for the Lambda to S3
 
     cerberus --debug -f /path/to/test.yaml publish-lambda --lambda-name WAF
 
-In the above command, `WAF` is a String enum name.
+In the above command, `WAF` is a String Enum name.
 
 ## Create Gateway Cluster
 
@@ -528,7 +528,7 @@ is updated:
     publish-lambda \
     --lambda-name CLOUD_FRONT_SG_GROUP_IP_SYNC
 
-In the above command, `CLOUD_FRONT_SG_GROUP_IP_SYNC` is a String name.
+In the above command, `CLOUD_FRONT_SG_GROUP_IP_SYNC` is a String Enum name.
 
 ## Create the Lambda function and subscribe it to the AWS IP change topic
 
