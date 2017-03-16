@@ -516,12 +516,12 @@ slack-icon         | A URL to a custom icon, you can leave this off to use the d
 
 ## Upload the Lambda to S3 for the CloudFront Security Group IP Synchronizer
 
-Now the Origin ELB is setup behind CloudFront and configured to filter Manual Whitelist, Manual Blacklist, and
-Auto Blacklist IPs, and enforce other basic edge security. Thus, we do not want to allow requests to bypass the WAF
-and talk to the Origin directly.
+Now the Origin ELB is setup behind CloudFront and configured to filter according to the Manual Whitelist,
+Manual Blacklist, Auto Blacklist IPs, and other basic edge security rules. Thus, we do not want to allow requests to
+bypass the WAF and talk to the Origin directly.
  
-Whitelist only the CloudFront IPs for the Origin ELB Security Group, so that all outside traffic will have to go
-through the WAF:
+Create a Lambda that watches the WAF whitelist and blacklist, and publishes a message to an SNS topic whenever a list
+is updated:
 
     cerberus --debug \
     -f /path/to/test.yaml \
@@ -532,9 +532,8 @@ In the above command, `CLOUD_FRONT_SG_GROUP_IP_SYNC` is a String name.
 
 ## Create the Lambda function and subscribe it to the AWS IP change topic
 
-Now we have a Lambda that auto-update the ingress of (properly tagged) Security Groups on ELBs.
-Next, subscribe to an AWS topic that the Lambda will publish a message an IP address has been whitelisted or
-blacklisted. The Lambda will read these messages from the topic and update the Security Group as required:
+Create a Lambda that subscribes to the SNS topic (from the previous step) and auto-updates (properly tagged) ELB
+Security Groups to allow or deny ingress based on the WAF whitelist/blacklist:
 
     cerberus -e demo
     -f /path/to/test.yaml \
