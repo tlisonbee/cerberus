@@ -33,16 +33,10 @@ and 4 max instances). Then wait for the instances to reach "InService" status.
 
 # Add Vault to New Consul Cluster
 
-Repeat the same method (as above) for Vault:
-
-
-* Scale the Vault ASG down to 0 instances
-* Wait until all of the instances have been terminated
-* Scale the Vault ASG back up to expected min, max and desired instance values
-* Wait for instances to reach "InService" status
+Reboot each instance in the Vault cluster using the AWS console.
 
 SSH into a Vault or Consul EC2 instance and make sure that all Vault and Consul
-private IPs appear in the following `consul members` list.
+private IPs appear in the `consul members` list:
 
 ```bash
 $ consul members -http-addr http://127.0.0.1:8580 -detailed
@@ -57,8 +51,9 @@ ip-172.1-8-95    172.1.8.95:8301    alive   build=0.6.4:32a1ed7c,dc=cerberus,rol
 
 ** Note: Vault instances will have `role=node` in the 'Tags' column
 
-If the Vault instances are not listed, you may need to reboot them to add them
-to the Consul cluster.
+If the Vault instances are not listed, then the Consul cluster may not have been
+fully initialized before the Vault reboot. Try rebooting the Vault nodes again
+to ensure they get added to the Consul cluster.
 
 # Start a SOCKS Proxy
 
