@@ -19,7 +19,7 @@ Simple preparation will help you enormously if you ever experience an actual out
 
 # Reset Consul Cluster
 
-Scale the Consul ASG down to 0 instances for the environment in need of
+Scale the Consul ASG down to 0 EC2 instances for the environment in need of
 recovery. This can be done in two ways:
 
 
@@ -33,9 +33,9 @@ and 4 max instances). Then wait for the instances to reach "InService" status.
 
 # Add Vault to New Consul Cluster
 
-Reboot each instance in the Vault cluster using the AWS console.
+Reboot each EC2 instance in the Vault cluster using the AWS console.
 
-SSH into a Vault or Consul EC2 instance and make sure that all Vault and Consul
+SSH into a Vault or Consul instance and make sure that all Vault and Consul
 private IPs appear in the `consul members` list:
 
 ```bash
