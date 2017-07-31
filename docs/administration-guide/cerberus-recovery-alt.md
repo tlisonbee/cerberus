@@ -37,12 +37,8 @@ Repeat the same method (as above) for Vault:
 * Scale the Vault ASG back up to expected min, max and desired instance values
 * Wait for instances to reach "InService" status
 
-
-
 SSH into a Vault or Consul EC2 instance and make sure that all Vault and Consul
 private IPs appear in the following `consul members` list.
-
-Vault instances will have `role=node`:
 
 ```bash
 $ consul members -detailed
@@ -54,6 +50,8 @@ ip-172.1-4-155   172.1.4.155:8301   alive   build=0.6.4:32a1ed7c,dc=cerberus,rol
 ip-172.1-8-61    172.1.8.61:8301    alive   build=0.6.4:32a1ed7c,dc=cerberus,expect=3,port=8300,role=consul,vsn=2,vsn_max=3,vsn_min=1
 ip-172.1-8-95    172.1.8.95:8301    alive   build=0.6.4:32a1ed7c,dc=cerberus,role=node,vsn=2,vsn_max=3,vsn_min=1
 ```
+
+** Note: Vault instances will have `role=node` in the 'Tags' column
 
 # Start a SOCKS Proxy
 
@@ -179,8 +177,8 @@ cerberus \
     --proxy-host localhost \
     --proxy-port 9001 \
     restore-complete \
-    -s3-bucket <bucket-name>
-    -s3-prefix <path-to-backup>
+    -s3-bucket <backup-bucket-name> \
+    -s3-prefix <path-to-backup> \
     -s3-region us-east-1 \
     -url https://cerberus-env-url.com
 ```
