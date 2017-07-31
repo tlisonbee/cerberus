@@ -62,8 +62,7 @@ start it now and use it in the commands below.
 
 # Add Certificates to Trust Store
 
-Add the Consul and Vault certificates (if they are different) in DER (*.cer)
-format to your Java trust store:
+Add the Vault certificate in DER (*.cer) format to your Java trust store:
 
 ```bash
 $ keytool -import-keystore /path/to/JDK/jre/lib/security/cacerts -storepass changeit -noprompt -trustcacerts -alias [certificate name] -file /path/to/der/file/[download_name].cer
