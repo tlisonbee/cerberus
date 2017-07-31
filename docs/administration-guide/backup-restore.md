@@ -185,6 +185,9 @@ cerberus \
 
 # Restore from Backup
 
+This command requires AWS credentials with permissions to decrypt the KMS key
+used to encrypt the specified Cerberus backup file:
+
 ```bash
 cerberus \
     -e dev \
