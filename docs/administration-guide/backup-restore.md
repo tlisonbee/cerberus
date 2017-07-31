@@ -53,7 +53,7 @@ ip-172.1-8-95    172.1.8.95:8301    alive   build=0.6.4:32a1ed7c,dc=cerberus,rol
 
 If the Vault instances are not listed, then the Consul cluster may not have been
 fully initialized before the Vault reboot. Try rebooting the Vault nodes again
-to ensure they get added to the Consul cluster.
+to ensure they are added to the Consul cluster.
 
 # Start a SOCKS Proxy
 
