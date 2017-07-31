@@ -21,6 +21,8 @@ Simple preparation will help you enormously if you ever experience an actual out
 
 Scale the Consul ASG down to 0 instances for the environment in need of
 recovery. This can be done in two ways:
+
+
 * Log in to AWS console and scale the Consul ASG down to zero
 * Use the Cerberus CLI 'update-stack' command to change the min-, max-, and
   desired- instance values to zero.
@@ -32,6 +34,8 @@ and 4 max instances). Then wait for the instances to reach "InService" status.
 # Add Vault to New Consul Cluster
 
 Repeat the same method (as above) for Vault:
+
+
 * Scale the Vault ASG down to 0 instances
 * Wait until all of the instances have been terminated
 * Scale the Vault ASG back up to expected min, max and desired instance values
@@ -41,7 +45,7 @@ SSH into a Vault or Consul EC2 instance and make sure that all Vault and Consul
 private IPs appear in the following `consul members` list.
 
 ```bash
-$ consul members -detailed
+$ consul members -http-addr http://127.0.0.1:8580 -detailed
 Node             Address            Status  Tags
 ip-172.1-0-101   172.1.0.101:8301   alive   build=0.6.4:32a1ed7c,dc=cerberus,role=node,vsn=2,vsn_max=3,vsn_min=1
 ip-172.1-0-102   172.1.0.102:8301   alive   build=0.6.4:32a1ed7c,dc=cerberus,expect=3,port=8300,role=consul,vsn=2,vsn_max=3,vsn_min=1
@@ -53,10 +57,13 @@ ip-172.1-8-95    172.1.8.95:8301    alive   build=0.6.4:32a1ed7c,dc=cerberus,rol
 
 ** Note: Vault instances will have `role=node` in the 'Tags' column
 
+If the Vault instances are not listed, you may need to reboot them to add them
+to the Consul cluster.
+
 # Start a SOCKS Proxy
 
-If you require a proxy to talk to you EC2 instances then you will want to start
-it now and use it in the commands below.
+If you require a proxy to talk to Cerberus EC2 instances then you will want to
+start it now and use it in the commands below.
 
 # Add Certificates to Trust Store
 
@@ -69,7 +76,6 @@ $ keytool -import-keystore /path/to/JDK/jre/lib/security/cacerts -storepass chan
 
 # Initialize Vault
 
-Make sure you have set up admin AWS credentials for Cerberus in your Terminal environment. You can get credentials by running: 'gimme_creds -a cerberus -r admin' OR 'gimme-aws-creds'.
 In a new Terminal tab run the following CLI command:
 
 ```bash
@@ -83,21 +89,28 @@ cerberus \
     init-vault-cluster
 ```
 
+** Note: This command requires admin AWS credentials for Cerberus to be set up
+in the Terminal environment.
+
 ## Troubleshooting:
 
-If vault returns a 400 status code like below, then make sure the 'token' value
+* If Vault returns a 400 status code like below, then make sure the 'token' value
 in the 'data/vault/vault-config.json' file matches the value in the
 'vault_acl_token' value in the 'config/consul/secrets.json' file in S3.
 
-```
-responseCode=400,
-requestUrl=https://<ip-addr>.<aws-region>.compute.amazonaws.com:8200/v1/sys/init,
-response={"errors":["failed to check for initialization: Unexpected response code: 403"]}
-```
+    ```
+    responseCode=400,
+    requestUrl=https://<ip-addr>.<aws-region>.compute.amazonaws.com:8200/v1/sys/init,
+    response={"errors":["failed to check for initialization: Unexpected response code: 403"]}
+    ```
 
-If the values token values do not match, run the 'create-vault-config' CLI
-command and reboot the Vault instances in the AWS console. If you still get a
-403 error, then reboot the nodes in your Consul cluster as well.
+    If the values token values in the two files mentioned aboved do not match, run
+    the 'create-vault-config' CLI command and reboot the Vault instances in the AWS
+    console. If you still get a 403 error, then reboot the nodes in your Consul
+    cluster as well.
+
+* If Vault returns a 500, then Vault may still be starting up. Give it a minute or
+two and try again.
 
 # Unseal Vault Cluster
 
@@ -139,6 +152,9 @@ cerberus \
     -e dev \
     -r us-west-2 \
     --debug \
+    --proxy-type SOCKS \
+    --proxy-host localhost \
+    --proxy-port 9001 \
     create-cms-vault-token \
     --force-overwrite
 ```
