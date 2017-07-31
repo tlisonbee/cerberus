@@ -1,6 +1,6 @@
 ---
 layout: documentation
-title: Consul Recovery Alternative
+title: Backup and Restore
 ---
 
 If Consul enters a fugue state or is unhealthy and cannot accept requests, one
@@ -83,7 +83,7 @@ cerberus \
     init-vault-cluster
 ```
 
-#### Troubleshooting:
+## Troubleshooting:
 
 If vault returns a 400 status code like below, then make sure the 'token' value
 in the 'data/vault/vault-config.json' file matches the value in the
@@ -96,7 +96,8 @@ response={"errors":["failed to check for initialization: Unexpected response cod
 ```
 
 If the values token values do not match, run the 'create-vault-config' CLI
-command and reboot the Vault instances in the AWS console.
+command and reboot the Vault instances in the AWS console. If you still get a
+403 error, then reboot the nodes in your Consul cluster as well.
 
 # Unseal Vault Cluster
 
